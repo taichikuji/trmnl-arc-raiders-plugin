@@ -30,13 +30,6 @@ function run(input) {
     const key = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     return 'arc-icon-' + (iconIds.has(key) ? key : 'default');
   }
-  function untilLabel(minutes) {
-    if (minutes < 60) return minutes + 'M';
-    const hours = Math.floor(minutes / 60);
-    const rest = minutes % 60;
-    return hours + 'H' + (rest ? ' ' + rest + 'M' : '');
-  }
-
   function formatTime(epoch) {
     try {
       return new Intl.DateTimeFormat('en-GB', {
@@ -44,6 +37,16 @@ function run(input) {
       }).format(new Date(epoch));
     } catch (_) {
       return new Date(epoch).toISOString().slice(11, 16) + ' UTC';
+    }
+  }
+  function displayTime(epoch) {
+    const time = formatTime(epoch);
+    try {
+      const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: zone });
+      return date.format(new Date(epoch)) === date.format(new Date(now))
+        ? time : date.format(new Date(epoch)).toUpperCase() + ' ' + time;
+    } catch (_) {
+      return new Date(epoch).toISOString().slice(0, 10) + ' ' + time;
     }
   }
   function shorterMap(map) {
@@ -74,10 +77,9 @@ function run(input) {
   const decorate = (ev, live) => ({
     name: ev.name.toUpperCase(), map: shorterMap(ev.map), level: 'MAP CONDITION',
     when: formatTime(ev.start) + '–' + formatTime(ev.end),
-    time: live ? formatTime(ev.end) : formatTime(ev.start),
-    remaining: Math.max(0, Math.ceil(((live ? ev.end : ev.start) - now) / 60000)),
+    time: displayTime(live ? ev.end : ev.start),
     state: live ? 'LIVE' : 'NEXT', long: ev.name.length > 15,
-    icon_id: iconId(ev.name), until_label: untilLabel(Math.max(0, Math.ceil(((live ? ev.end : ev.start) - now) / 60000)))
+    icon_id: iconId(ev.name)
   });
   // Keep order chronological in each group; the feature pane prioritizes major live conditions.
   const featured = active.find(ev => kind(ev) === 'MAJOR') || active[0] || upcoming[0] || null;

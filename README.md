@@ -2,7 +2,15 @@
 
 An unofficial TRMNL plugin showing current and upcoming ARC Raiders map conditions using the [MetaForge event schedule](https://metaforge.app/arc-raiders).
 
-Choose a matchmaking region in the plugin settings. The plugin supports full, half horizontal, half vertical and quadrant layouts, and refreshes every 30 minutes. Times use your TRMNL account's time zone.
+Choose a matchmaking region in the plugin settings. The plugin supports full, half horizontal, half vertical and quadrant layouts, and refreshes every 30 minutes. Times use your TRMNL account's time zone. Conditions reflect the schedule at the displayed update time; start and end times remain useful between refreshes.
+
+![ARC Raiders map conditions, full layout](TRMNL/media/preview_full.webp)
+
+Sample schedule, not live conditions.
+
+| Half horizontal | Half vertical | Quadrant |
+| --- | --- | --- |
+| ![Half horizontal layout](TRMNL/media/preview_half_horizontal.webp) | ![Half vertical layout](TRMNL/media/preview_half_vertical.webp) | ![Quadrant layout](TRMNL/media/preview_quadrant.webp) |
 
 ## Develop locally
 

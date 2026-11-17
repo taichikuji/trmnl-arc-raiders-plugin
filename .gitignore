@@ -8,3 +8,4 @@ _build/
 *.local.*
 .agents
 /AGENTS.md
+tmp/

@@ -1,20 +1,20 @@
 {% comment %}ARC Raiders field schedule: text and vector shapes are self-contained, with no remote image requests.{% endcomment %}
 {% assign info = briefing %}
 <style>
-.arc { width:100%;height:100%;box-sizing:border-box;overflow:hidden;color:#111216;background:#f5f4ef;font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column; }
+.arc { width:100%;height:100%;box-sizing:border-box;overflow:hidden;color:#111216;background:#fff;font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column; }
 .arc * { box-sizing:border-box }
 .arc-icon-sprite { position:absolute;width:0;height:0;overflow:hidden;pointer-events:none }
 .arc-icon { width:25px;height:25px;flex:none;display:block;color:inherit;overflow:visible }
 .arc-brand-bars { display:flex;gap:3px;height:18px;align-items:center;margin-right:11px;transform:skew(22deg) }
 .arc-brand-bars span { background:#141518;width:5px;height:18px }
-.arc-header { display:flex;align-items:center;justify-content:space-between;flex:none;min-height:53px;padding:11px 20px 10px;border-bottom:3px solid #111216;gap:10px }
+.arc-header {flex:none;min-height:53px;padding:11px 20px 10px;border-bottom:3px solid #111216;gap:10px }
 .arc-header-left { display:flex;align-items:center;min-width:0 }
 .arc-brand { font-size:28px;line-height:1;font-weight:900;letter-spacing:-1.7px;white-space:nowrap }
 .arc-brand em { font-style:normal;font-weight:600;letter-spacing:-1.4px }
 .arc-meta { font-size:10px;letter-spacing:1px;font-weight:900;text-align:right;white-space:nowrap }
 .arc-meta span { display:block;font-size:9px;color:#555;letter-spacing:1.2px;margin-top:3px }
-.arc-main { flex:1;min-height:0;display:flex;padding:13px 19px 10px;gap:18px }
-.arc-hero { width:43%;flex:none;min-width:0;background:#111216;color:#fff;padding:19px;display:flex;flex-direction:column;position:relative;overflow:hidden }
+.arc-main { flex:1;min-height:0;padding:13px 19px 10px;gap:18px }
+.arc-hero {min-width:0;background:#111216;color:#fff;padding:19px;display:flex;flex-direction:column;position:relative;overflow:hidden }
 .arc-hero:before,.arc-hero:after { content:"";position:absolute;width:23px;height:23px;pointer-events:none;border-color:#a9a9a9;opacity:.55 }
 .arc-hero:before { right:12px;top:12px;border-top:1px solid;border-right:1px solid }
 .arc-hero:after { left:12px;bottom:12px;border-left:1px solid;border-bottom:1px solid }
@@ -26,8 +26,8 @@
 .arc-hero-name.is-long { font-size:28px }
 .arc-hero-map { font-size:11px;line-height:1.25;letter-spacing:1px;font-weight:900;border-top:1px solid #777;padding:10px 0 13px }
 .arc-hero-bottom { display:flex;align-items:flex-end;justify-content:space-between;gap:5px;border-top:1px solid #777;padding-top:12px }
-.arc-hero-timer { font-size:51px;font-weight:900;letter-spacing:-2.3px;line-height:.93 }
-.arc-hero-timer span { font-size:13px;letter-spacing:0;margin-left:4px }
+.arc-hero-timer { font-size:40px;font-weight:900;letter-spacing:-2.3px;line-height:.93 }
+.arc-hero-timer.is-dated { font-size:24px;letter-spacing:-1px }
 .arc-hero-hint { font-size:10px;letter-spacing:.9px;font-weight:800;text-align:right;line-height:1.5 }
 .arc-section { flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden }
 .arc-section-head { font-size:11px;letter-spacing:1.7px;font-weight:900;padding:1px 0 6px;border-bottom:2px solid #111216;display:flex;align-items:baseline;justify-content:space-between;flex:none }
@@ -57,7 +57,7 @@
 .arc-c-body { flex:1;min-width:0 }
 .arc-c-title { font-size:15px;font-weight:900;line-height:1.1;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap }
 .arc-c-sub { font-size:9px;line-height:1.1;color:#555;font-weight:800;letter-spacing:.6px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis }
-.arc-c-right { flex:none;font-size:15px;font-weight:900;white-space:nowrap;text-align:right;min-width:56px }
+.arc-c-right { flex:none;font-size:13px;font-weight:900;white-space:nowrap;text-align:right;min-width:56px }
 .arc-c-footer { flex:none;font-size:9px;letter-spacing:.65px;font-weight:900;padding-top:5px;white-space:nowrap }
 .arc-overline { font-size:10px;font-weight:900;letter-spacing:1.3px;padding:6px 0 4px }
 .arc-half-vertical .arc-c-head { flex-direction:column;align-items:flex-start }
@@ -69,12 +69,12 @@
 .arc-quarter .arc-c-row .arc-icon { width:22px;height:22px }
 .arc-quarter .arc-c-title { font-size:12px }
 .arc-quarter .arc-c-sub { font-size:9px }
-.arc-quarter .arc-c-right { font-size:12px;min-width:43px }
+.arc-quarter .arc-c-right { font-size:11px;min-width:43px }
 .arc-quarter .arc-overline { font-size:9px;padding:3px 0 }
 .arc-quarter .arc-c-footer { font-size:8px }
-/* OG: show 4 active + 5 next without truncating the footer. */
+/* OG: reserve space for both sections. */
 @media(max-height:600px) {
-  .arc-live-list>.arc-entry:nth-child(n+5),.arc-next-list>.arc-entry:nth-child(n+6) { display:none }
+  .arc-live-list>.arc-entry:nth-child(n+5),.arc-next-list>.arc-entry:nth-child(n+5),.arc-half-vertical .arc-extra { display:none }
 }
 /* X: use the additional vertical resolution instead of leaving the right panel empty. */
 @media(min-height:650px) {
@@ -84,15 +84,16 @@
   .arc-brand-bars span { height:24px;width:7px }
   .arc-meta { font-size:13px }
   .arc-main { gap:24px;padding:21px 25px 17px }
-  .arc-hero { padding:27px;width:42% }
+  .arc-hero { padding:27px }
   .arc-hero-icon { width:118px;height:118px;top:20px;right:20px;padding:20px }
   .arc-hero-middle { padding-top:146px }
   .arc-kicker { font-size:13px }
   .arc-hero-name { font-size:45px }
   .arc-hero-name.is-long { font-size:37px }
   .arc-hero-map { font-size:14px;padding-top:15px;padding-bottom:20px }
-  .arc-hero-timer { font-size:75px }
-  .arc-hero-hint { font-size:12px }
+  .arc-hero-timer { font-size:58px }
+  .arc-hero-timer.is-dated { font-size:24px;letter-spacing:-1px }
+.arc-hero-hint { font-size:12px }
   .arc-section-head { font-size:14px;padding:2px 0 9px }
   .arc-section-head span:last-child { font-size:11px }
   .arc-next-head { margin-top:17px }
@@ -105,6 +106,11 @@
   .arc-entry-right { min-width:78px }
   .arc-footer { min-height:38px;font-size:11px;padding:8px 25px }
 }
+.screen--lg .arc-compact .arc-c-logo { font-size:26px }
+.screen--lg .arc-compact .arc-c-meta, .screen--lg .arc-compact .arc-overline { font-size:13px }
+.screen--lg .arc-compact .arc-c-title, .screen--lg .arc-compact .arc-c-right { font-size:17px }
+.screen--lg .arc-compact .arc-c-sub, .screen--lg .arc-compact .arc-c-footer { font-size:12px }
+.screen--lg .arc-compact .arc-c-row .arc-icon { width:30px;height:30px }
 </style>
 <svg class="arc-icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs>
 <symbol id="arc-icon-default" viewBox="0 0 32 32"><g stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="4"/><path d="M16 1v6 M16 25v6 M1 16h6 M25 16h6"/></g></symbol>
