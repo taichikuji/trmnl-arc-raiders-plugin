@@ -14,6 +14,11 @@ id: 542750
 oauth_enabled: 'false'
 oauth_pkce_enabled: 'no'
 custom_fields:
+- keyname: bio
+  field_type: author_bio
+  name: About ARC Raiders
+  github_url: https://github.com/taichikuji/trmnl-arc-raiders-plugin
+  description: Unofficial ARC Raiders map conditions, with data from MetaForge.
 - keyname: region
   field_type: select
   name: Server Region

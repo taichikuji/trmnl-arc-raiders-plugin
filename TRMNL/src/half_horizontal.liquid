@@ -1,13 +1,13 @@
-<div class="arc arc-compact">
-  <div class="arc-c-head"><div class="arc-c-brand"><div class="arc-brand-bars"><span></span><span></span><span></span></div><div class="arc-c-logo">ARC RAIDERS</div></div><div class="arc-c-meta">{{ info.region | escape }} &nbsp; / &nbsp; AS OF {{ info.clock }}</div></div>
+<div class="arc text--bold arc-compact">
+  {% render "arc_compact_header", info: info, vertical: false %}
   <div class="arc-compact-items">
     {% for entry in info.live limit:2 %}
-      <div class="arc-c-row"><svg class="arc-icon" aria-hidden="true"><use href="#{{ entry.icon_id }}"></use></svg><div class="arc-c-body"><div class="arc-c-title">{{ entry.name | escape }}</div><div class="arc-c-sub">{{ entry.map | escape }} &nbsp; / &nbsp; LIVE</div></div><div class="arc-c-right">ENDS {{ entry.time }}</div></div>
+      {% render "arc_compact_entry", entry: entry, index: 0, show_state: true %}
     {% endfor %}
     {% for entry in info.next limit:2 %}
-      <div class="arc-c-row"><svg class="arc-icon" aria-hidden="true"><use href="#{{ entry.icon_id }}"></use></svg><div class="arc-c-body"><div class="arc-c-title">{{ entry.name | escape }}</div><div class="arc-c-sub">{{ entry.map | escape }} &nbsp; / &nbsp; NEXT</div></div><div class="arc-c-right">{{ entry.time }}</div></div>
+      {% render "arc_compact_entry", entry: entry, index: 0, show_state: true %}
     {% endfor %}
-    {% if info.has_feature == false %}<div class="arc-empty">SCHEDULE UNAVAILABLE</div>{% endif %}
+    {% if info.has_feature == false %}<div class="arc-empty font--small">SCHEDULE UNAVAILABLE</div>{% endif %}
   </div>
-  <div class="arc-c-footer">UNOFFICIAL &nbsp; / &nbsp; {{ info.attribution }}</div>
+  <div class="arc-c-footer font--small">UNOFFICIAL &nbsp; / &nbsp; {{ info.attribution }}</div>
 </div>

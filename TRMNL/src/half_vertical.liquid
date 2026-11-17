@@ -1,15 +1,15 @@
-<div class="arc arc-compact arc-half-vertical">
-  <div class="arc-c-head"><div class="arc-c-brand"><div class="arc-brand-bars"><span></span><span></span><span></span></div><div class="arc-c-logo">ARC RAIDERS</div></div><div class="arc-c-meta">MAP CONDITIONS &nbsp; / &nbsp; {{ info.region | escape }} &nbsp; / &nbsp; AS OF {{ info.clock }}</div></div>
+<div class="arc text--bold arc-compact arc-half-vertical">
+  {% render "arc_compact_header", info: info, vertical: true %}
   <div class="arc-compact-items">
-    <div class="arc-overline">ACTIVE NOW &nbsp; / &nbsp; {{ info.live_count }} TOTAL</div>
+    <div class="arc-overline font--small">ACTIVE NOW &nbsp; / &nbsp; {{ info.live_count }} TOTAL</div>
     {% for entry in info.live limit:3 %}
-      <div class="arc-c-row"><svg class="arc-icon" aria-hidden="true"><use href="#{{ entry.icon_id }}"></use></svg><div class="arc-c-body"><div class="arc-c-title">{{ entry.name | escape }}</div><div class="arc-c-sub">{{ entry.map | escape }}</div></div><div class="arc-c-right">ENDS {{ entry.time }}</div></div>
+      {% render "arc_compact_entry", entry: entry, index: 0, show_state: false %}
     {% endfor %}
-    <div class="arc-overline">COMING UP</div>
+    <div class="arc-overline font--small">COMING UP</div>
     {% for entry in info.next limit:8 %}
-      <div class="arc-c-row{% if forloop.index > 4 %} arc-extra{% endif %}"><svg class="arc-icon" aria-hidden="true"><use href="#{{ entry.icon_id }}"></use></svg><div class="arc-c-body"><div class="arc-c-title">{{ entry.name | escape }}</div><div class="arc-c-sub">{{ entry.map | escape }}</div></div><div class="arc-c-right">{{ entry.time }}</div></div>
+      {% render "arc_compact_entry", entry: entry, index: forloop.index, show_state: false %}
     {% endfor %}
-    {% if info.has_feature == false %}<div class="arc-empty">NO SCHEDULE</div>{% endif %}
+    {% if info.has_feature == false %}<div class="arc-empty font--small">NO SCHEDULE</div>{% endif %}
   </div>
-  <div class="arc-c-footer">UNOFFICIAL &nbsp; / &nbsp; DATA: METAFORGE.APP</div>
+  <div class="arc-c-footer font--small">UNOFFICIAL &nbsp; / &nbsp; DATA: METAFORGE.APP</div>
 </div>

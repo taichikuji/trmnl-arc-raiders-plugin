@@ -30,6 +30,12 @@ function run(input) {
     const key = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     return 'arc-icon-' + (iconIds.has(key) ? key : 'default');
   }
+  function untilLabel(minutes) {
+    if (minutes < 60) return minutes + ' MIN';
+    const hours = Math.floor(minutes / 60);
+    const rest = minutes % 60;
+    return hours + 'H' + (rest ? ' ' + rest + 'M' : '');
+  }
   function formatTime(epoch) {
     try {
       return new Intl.DateTimeFormat('en-GB', {
@@ -74,13 +80,17 @@ function run(input) {
   }).sort((a, b) => a.start - b.start || a.end - b.end || a.name.localeCompare(b.name));
   const active = all.filter(ev => ev.start <= now && now < ev.end);
   const upcoming = all.filter(ev => now < ev.start && ev.start <= now + 86400000);
-  const decorate = (ev, live) => ({
-    name: ev.name.toUpperCase(), map: shorterMap(ev.map), level: 'MAP CONDITION',
-    when: formatTime(ev.start) + '–' + formatTime(ev.end),
-    time: displayTime(live ? ev.end : ev.start),
-    state: live ? 'LIVE' : 'NEXT', long: ev.name.length > 15,
-    icon_id: iconId(ev.name)
-  });
+  const decorate = (ev, live) => {
+    const remaining = Math.ceil(((live ? ev.end : ev.start) - now) / 60000);
+    return {
+      name: ev.name.toUpperCase(), map: shorterMap(ev.map), level: 'MAP CONDITION',
+      when: displayTime(ev.start) + '–' + formatTime(ev.end),
+      time: displayTime(live ? ev.end : ev.start),
+      remaining, until_label: untilLabel(remaining),
+      state: live ? 'LIVE' : 'NEXT', long: ev.name.length > 15,
+      icon_id: iconId(ev.name)
+    };
+  };
   // Keep order chronological in each group; the feature pane prioritizes major live conditions.
   const featured = active.find(ev => kind(ev) === 'MAJOR') || active[0] || upcoming[0] || null;
   const featureLive = Boolean(featured && featured.start <= now);

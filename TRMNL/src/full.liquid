@@ -1,39 +1,39 @@
-<div class="arc">
+<div class="arc text--bold">
   <header class="arc-header flex flex--row flex--between">
-    <div class="arc-header-left"><div class="arc-brand-bars"><span></span><span></span><span></span></div><div class="arc-brand">ARC RAIDERS</div></div>
-    <div class="arc-meta">MAP CONDITIONS &nbsp; / &nbsp; {{ info.region | escape }}<span>FIELD INTELLIGENCE &nbsp; • &nbsp; AS OF {{ info.clock }}</span></div>
+    <div class="arc-header-left flex flex--row flex--left gap--none w--min-0"><div class="arc-brand-bars"><span></span><span></span><span></span></div><div class="arc-brand font--large lg:font--xxlarge">ARC RAIDERS</div></div>
+    <div class="arc-meta font--small">MAP CONDITIONS &nbsp; / &nbsp; {{ info.region | escape }}<span>FIELD INTELLIGENCE &nbsp; • &nbsp; AS OF {{ info.clock }}</span></div>
   </header>
   <main class="arc-main grid grid--cols-12">
-    <section class="arc-hero col--span-5">
-      <div class="arc-kicker"><span class="arc-live-dot"></span>{% if info.feature_live %}ACTIVE OPERATION{% elsif info.has_feature %}NEXT DEPLOYMENT{% else %}SCHEDULE STATUS{% endif %}</div>
+    <section class="arc-hero col--span-5 relative">
+      <div class="arc-kicker font--small"><span class="arc-live-dot"></span>{% if info.feature_live %}ACTIVE OPERATION{% elsif info.has_feature %}NEXT DEPLOYMENT{% else %}SCHEDULE STATUS{% endif %}</div>
       {% if info.has_feature %}
-        <div class="arc-hero-middle">
-          <svg class="arc-hero-icon" aria-hidden="true"><use href="#{{ info.feature.icon_id }}"></use></svg>
-          <div class="arc-hero-name{% if info.feature.long %} is-long{% endif %}">{{ info.feature.name | escape }}</div>
-          <div class="arc-hero-map">{{ info.feature.map | escape }} &nbsp; / &nbsp; {{ info.feature.level }}</div>
+        <div class="arc-hero-middle relative">
+          <svg class="arc-hero-icon absolute" aria-hidden="true"><use href="#{{ info.feature.icon_id }}"></use></svg>
+          <div class="arc-hero-name {% if info.feature.long %}font--large lg:font--xlarge{% else %}font--xlarge lg:font--xxlarge{% endif %}">{{ info.feature.name | escape }}</div>
+          <div class="arc-hero-map font--small lg:font--base">{{ info.feature.map | escape }} &nbsp; / &nbsp; {{ info.feature.level }}</div>
         </div>
-        <div class="arc-hero-bottom"><div class="arc-hero-timer{% if info.feature.time contains " " %} is-dated{% endif %}">{{ info.feature.time }}</div><div class="arc-hero-hint">{% if info.feature_live %}CONDITION<br>ENDS AT{% else %}CONDITION<br>STARTS AT{% endif %}</div></div>
+        <div class="arc-hero-bottom flex flex--row flex--bottom flex--between"><div class="arc-hero-timer {% if info.feature.remaining >= 60 %}font--xlarge lg:font--xxlarge{% else %}font--xxlarge lg:font--xxxlarge{% endif %}">{{ info.feature.until_label }}</div><div class="arc-hero-hint font--small">{% if info.feature_live %}LEFT<br>ENDS {% else %}UNTIL START<br>{% endif %}{{ info.feature.time }}</div></div>
       {% else %}
-        <div class="arc-hero-middle"><svg class="arc-hero-icon" aria-hidden="true"><use href="#arc-icon-default"></use></svg><div class="arc-hero-name">NO SIGNAL</div><div class="arc-hero-map">SCHEDULE UNAVAILABLE</div></div>
-        <div class="arc-hero-bottom"><div class="arc-kicker">CHECK DATA SOURCE</div></div>
+        <div class="arc-hero-middle relative"><svg class="arc-hero-icon absolute" aria-hidden="true"><use href="#arc-icon-default"></use></svg><div class="arc-hero-name font--xlarge lg:font--xxlarge">NO SIGNAL</div><div class="arc-hero-map font--small lg:font--base">SCHEDULE UNAVAILABLE</div></div>
+        <div class="arc-hero-bottom flex flex--row flex--bottom flex--between"><div class="arc-kicker font--small">CHECK DATA SOURCE</div></div>
       {% endif %}
     </section>
     <section class="arc-section col--span-7">
-      <div class="arc-section-head"><span>ACTIVE NOW</span><span>{{ info.live_count }} TOTAL</span></div>
+      <div class="arc-section-head font--small lg:font--base flex flex--row flex--between"><span>ACTIVE NOW</span><span>{{ info.live_count }} TOTAL</span></div>
       <div class="arc-entries arc-live-list">
         {% for entry in info.live limit:5 %}
-          <div class="arc-entry"><div class="arc-entry-icon"><svg class="arc-icon" aria-hidden="true"><use href="#{{ entry.icon_id }}"></use></svg></div><div class="arc-entry-info"><div class="arc-entry-name">{{ entry.name | escape }}</div><div class="arc-entry-map">{{ entry.map | escape }}</div></div><div class="arc-entry-right"><div class="arc-entry-time">ENDS {{ entry.time }}</div><div class="arc-entry-when">{{ entry.when }}</div></div></div>
+          {% render "arc_entry", entry: entry %}
         {% endfor %}
-        {% if info.has_live == false %}<div class="arc-empty">NO CONDITIONS ACTIVE</div>{% endif %}
+        {% if info.has_live == false %}<div class="arc-empty font--small">NO CONDITIONS ACTIVE</div>{% endif %}
       </div>
-      <div class="arc-section-head arc-next-head"><span>COMING UP</span><span>NEXT 24 HRS</span></div>
+      <div class="arc-section-head arc-next-head font--small lg:font--base flex flex--row flex--between"><span>COMING UP</span><span>NEXT 24 HRS</span></div>
       <div class="arc-entries arc-next-list">
         {% for entry in info.next limit:7 %}
-          <div class="arc-entry"><div class="arc-entry-icon"><svg class="arc-icon" aria-hidden="true"><use href="#{{ entry.icon_id }}"></use></svg></div><div class="arc-entry-info"><div class="arc-entry-name">{{ entry.name | escape }}</div><div class="arc-entry-map">{{ entry.map | escape }}</div></div><div class="arc-entry-right"><div class="arc-entry-time">{{ entry.time }}</div><div class="arc-entry-when">{{ entry.when }}</div></div></div>
+          {% render "arc_entry", entry: entry %}
         {% endfor %}
-        {% if info.has_next == false %}<div class="arc-empty">NO UPCOMING WINDOWS</div>{% endif %}
+        {% if info.has_next == false %}<div class="arc-empty font--small">NO UPCOMING WINDOWS</div>{% endif %}
       </div>
     </section>
   </main>
-  <footer class="arc-footer"><span>RAIDER OPERATIONS &nbsp; • &nbsp; {{ info.age | default: 'ROTATION FEED' }}</span><span>UNOFFICIAL &nbsp; / &nbsp; {{ info.attribution }}</span></footer>
+  <footer class="arc-footer font--small flex flex--row flex--between"><span>RAIDER OPERATIONS &nbsp; • &nbsp; {{ info.age | default: 'ROTATION FEED' }}</span><span>UNOFFICIAL &nbsp; / &nbsp; {{ info.attribution }}</span></footer>
 </div>
