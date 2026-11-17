@@ -1,0 +1,120 @@
+{
+  "region": "europe",
+  "cachedAt": 1794939240000,
+  "data": [
+    {
+      "name": "Close Scrutiny",
+      "map": "Dam",
+      "startTime": 1794938400000,
+      "endTime": 1794942000000
+    },
+    {
+      "name": "Electromagnetic Storm",
+      "map": "Spaceport",
+      "startTime": 1794938400000,
+      "endTime": 1794942000000
+    },
+    {
+      "name": "Matriarch",
+      "map": "The Blue Gate",
+      "startTime": 1794938400000,
+      "endTime": 1794942000000
+    },
+    {
+      "name": "Night Raid",
+      "map": "Riven Tides",
+      "startTime": 1794938400000,
+      "endTime": 1794942000000
+    },
+    {
+      "name": "ARC Frigate",
+      "map": "Spaceport",
+      "startTime": 1794942000000,
+      "endTime": 1794945600000
+    },
+    {
+      "name": "Husk Graveyard",
+      "map": "Dam",
+      "startTime": 1794942000000,
+      "endTime": 1794945600000
+    },
+    {
+      "name": "Lush Blooms",
+      "map": "Buried City",
+      "startTime": 1794942000000,
+      "endTime": 1794945600000
+    },
+    {
+      "name": "Night Raid",
+      "map": "Stella Montis",
+      "startTime": 1794942000000,
+      "endTime": 1794945600000
+    },
+    {
+      "name": "Bird City",
+      "map": "Buried City",
+      "startTime": 1794945600000,
+      "endTime": 1794949200000
+    },
+    {
+      "name": "Close Scrutiny",
+      "map": "Dam",
+      "startTime": 1794945600000,
+      "endTime": 1794949200000
+    },
+    {
+      "name": "Harvester",
+      "map": "The Blue Gate",
+      "startTime": 1794945600000,
+      "endTime": 1794949200000
+    },
+    {
+      "name": "Locked Gate",
+      "map": "The Blue Gate",
+      "startTime": 1794945600000,
+      "endTime": 1794949200000
+    },
+    {
+      "name": "Redirection",
+      "map": "Pendola Pass",
+      "startTime": 1794945600000,
+      "endTime": 1794949200000
+    },
+    {
+      "name": "Cold Snap",
+      "map": "Dam",
+      "startTime": 1794949200000,
+      "endTime": 1794952800000
+    },
+    {
+      "name": "Matriarch",
+      "map": "The Blue Gate",
+      "startTime": 1794956400000,
+      "endTime": 1794960000000
+    },
+    {
+      "name": "Launch Tower Loot",
+      "map": "Spaceport",
+      "startTime": 1794963600000,
+      "endTime": 1794967200000
+    },
+    {
+      "name": "Hurricane",
+      "map": "Spaceport",
+      "startTime": 1794999600000,
+      "endTime": 1795003200000
+    },
+    {
+      "name": "Hidden Bunker",
+      "map": "Spaceport",
+      "startTime": 1795006800000,
+      "endTime": 1795010400000
+    },
+    {
+      "name": "Electromagnetic Storm",
+      "map": "Dam",
+      "startTime": 1795014000000,
+      "endTime": 1795017600000
+    }
+  ]
+}

@@ -1,39 +1,36 @@
-<div class="arc text--bold">
-  <header class="arc-header flex flex--row flex--between">
-    <div class="arc-header-left flex flex--row flex--left gap--none w--min-0"><div class="arc-brand-bars"><span></span><span></span><span></span></div><div class="arc-brand font--large lg:font--xxlarge">ARC RAIDERS</div></div>
-    <div class="arc-meta font--small">MAP CONDITIONS &nbsp; / &nbsp; {{ info.region | escape }}<span>FIELD INTELLIGENCE &nbsp; • &nbsp; AS OF {{ info.clock }}</span></div>
-  </header>
-  <main class="arc-main grid grid--cols-12">
-    <section class="arc-hero col--span-5 relative">
-      <div class="arc-kicker font--small"><span class="arc-live-dot"></span>{% if info.feature_live %}ACTIVE OPERATION{% elsif info.has_feature %}NEXT DEPLOYMENT{% else %}SCHEDULE STATUS{% endif %}</div>
-      {% if info.has_feature %}
-        <div class="arc-hero-middle relative">
-          <svg class="arc-hero-icon absolute" aria-hidden="true"><use href="#{{ info.feature.icon_id }}"></use></svg>
-          <div class="arc-hero-name {% if info.feature.long %}font--large lg:font--xlarge{% else %}font--xlarge lg:font--xxlarge{% endif %}">{{ info.feature.name | escape }}</div>
-          <div class="arc-hero-map font--small lg:font--base">{{ info.feature.map | escape }} &nbsp; / &nbsp; {{ info.feature.level }}</div>
-        </div>
-        <div class="arc-hero-bottom flex flex--row flex--bottom flex--between"><div class="arc-hero-timer {% if info.feature.remaining >= 60 %}font--xlarge lg:font--xxlarge{% else %}font--xxlarge lg:font--xxxlarge{% endif %}">{{ info.feature.until_label }}</div><div class="arc-hero-hint font--small">{% if info.feature_live %}LEFT<br>ENDS {% else %}UNTIL START<br>{% endif %}{{ info.feature.time }}</div></div>
-      {% else %}
-        <div class="arc-hero-middle relative"><svg class="arc-hero-icon absolute" aria-hidden="true"><use href="#arc-icon-default"></use></svg><div class="arc-hero-name font--xlarge lg:font--xxlarge">NO SIGNAL</div><div class="arc-hero-map font--small lg:font--base">SCHEDULE UNAVAILABLE</div></div>
-        <div class="arc-hero-bottom flex flex--row flex--bottom flex--between"><div class="arc-kicker font--small">CHECK DATA SOURCE</div></div>
-      {% endif %}
-    </section>
-    <section class="arc-section col--span-7">
-      <div class="arc-section-head font--small lg:font--base flex flex--row flex--between"><span>ACTIVE NOW</span><span>{{ info.live_count }} TOTAL</span></div>
-      <div class="arc-entries arc-live-list">
-        {% for entry in info.live limit:5 %}
-          {% render "arc_entry", entry: entry %}
-        {% endfor %}
-        {% if info.has_live == false %}<div class="arc-empty font--small">NO CONDITIONS ACTIVE</div>{% endif %}
+{% assign limit = 3 %}
+{% if large_device %}{% assign limit = 4 %}{% endif %}
+{% if info.stale %}{% assign limit = limit | minus: 1 %}{% endif %}
+{% assign feature = info.live.first | default: info.next.first %}
+{% assign others = info.live | slice: 1, limit %}
+{% assign next_offset = 0 %}
+{% if feature and feature.active == false %}{% assign next_offset = 1 %}{% endif %}
+{% assign upcoming_limit = 3 %}
+{% if large_device %}{% assign upcoming_limit = 4 %}{% endif %}
+{% assign upcoming = info.next | slice: next_offset, upcoming_limit %}
+{% assign shown_active = others.size %}
+{% if feature.active %}{% assign shown_active = shown_active | plus: 1 %}{% endif %}
+{% assign shown_next = upcoming.size | plus: next_offset %}
+<div class="layout layout--col layout--top gap--none p--4 lg:p--5">
+  {% render "arc_header", wordmark: arc_wordmark, info: info, full: true %}
+  <main class="grid grid--cols-12 gap--medium w--full stretch-y py--3 lg:py--2">
+    <div class="col--span-5 h--full">
+      {% render "arc_feature", entry: feature, info: info, sprites: arc_icons, variant: 'full' %}
+    </div>
+    <section class="col--span-7 flex flex--col flex--top flex--left gap--none h--full">
+      <div class="flex flex--row flex--between w--full pb--1 border--h-black">
+        <span class="label label--base lg:label--large text--bold">{% if feature.active %}ALSO ACTIVE{% else %}ACTIVE NOW{% endif %}</span>
+        <span class="label label--base lg:label--large">{{ info.live.size }} TOTAL</span>
       </div>
-      <div class="arc-section-head arc-next-head font--small lg:font--base flex flex--row flex--between"><span>COMING UP</span><span>NEXT 24 HRS</span></div>
-      <div class="arc-entries arc-next-list">
-        {% for entry in info.next limit:7 %}
-          {% render "arc_entry", entry: entry %}
-        {% endfor %}
-        {% if info.has_next == false %}<div class="arc-empty font--small">NO UPCOMING WINDOWS</div>{% endif %}
+      {% for entry in others %}{% render "arc_entry", entry: entry, sprites: arc_icons %}{% endfor %}
+      {% if others.size == 0 %}<span class="label label--base lg:label--large py--2">{% if feature.active %}No other active conditions{% else %}No conditions active{% endif %}</span>{% endif %}
+      <div class="flex flex--row flex--between w--full pt--2 pb--1 border--h-black">
+        <span class="label label--base lg:label--large text--bold">COMING UP</span>
+        <span class="label label--base lg:label--large">NEXT PER CONDITION</span>
       </div>
+      {% for entry in upcoming %}{% render "arc_entry", entry: entry, sprites: arc_icons %}{% endfor %}
+      {% if upcoming.size == 0 %}<span class="label label--base lg:label--large py--2">{% if info.next.size > 0 %}No other upcoming conditions{% else %}None in the next 24 hours{% endif %}</span>{% endif %}
+      {% render "arc_omitted", info: info, shown_active: shown_active, shown_next: shown_next %}
     </section>
   </main>
-  <footer class="arc-footer font--small flex flex--row flex--between"><span>RAIDER OPERATIONS &nbsp; • &nbsp; {{ info.age | default: 'ROTATION FEED' }}</span><span>UNOFFICIAL &nbsp; / &nbsp; {{ info.attribution }}</span></footer>
 </div>

@@ -1,13 +1,4 @@
-<div class="arc text--bold arc-compact">
-  {% render "arc_compact_header", info: info, vertical: false %}
-  <div class="arc-compact-items">
-    {% for entry in info.live limit:2 %}
-      {% render "arc_compact_entry", entry: entry, index: 0, show_state: true %}
-    {% endfor %}
-    {% for entry in info.next limit:2 %}
-      {% render "arc_compact_entry", entry: entry, index: 0, show_state: true %}
-    {% endfor %}
-    {% if info.has_feature == false %}<div class="arc-empty font--small">SCHEDULE UNAVAILABLE</div>{% endif %}
-  </div>
-  <div class="arc-c-footer font--small">UNOFFICIAL &nbsp; / &nbsp; {{ info.attribution }}</div>
-</div>
+{% assign limit = 2 %}
+{% if large_device %}{% assign limit = 3 %}{% endif %}
+{% if info.stale %}{% assign limit = limit | minus: 1 %}{% endif %}
+{% render "arc_compact", wordmark: arc_wordmark, info: info, sprites: arc_icons, limit: limit %}
