@@ -1,0 +1,10 @@
+node_modules/
+.cache/
+dist/
+.env
+.env.*
+_build/
+*.zip
+*.local.*
+.agents
+/AGENTS.md

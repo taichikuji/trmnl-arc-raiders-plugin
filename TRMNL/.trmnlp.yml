@@ -1,0 +1,8 @@
+---
+watch:
+  - src
+  - .trmnlp.yml
+transform_runtime: disabled
+custom_fields: {"region":"europe"}
+# Synthetic, static preview data.
+variables: {"briefing":{"region":"EUROPE","clock":"16:39","status":"SCHEDULE READY","age":"","live_count":1,"has_live":true,"has_next":true,"next_count":2,"has_feature":true,"feature":{"name":"NIGHT RAID","map":"DAM","level":"MAP CONDITION","when":"16:24–17:24","time":"17:24","remaining":45,"state":"LIVE","long":false,"icon_id":"arc-icon-night-raid","until_label":"45M"},"feature_live":true,"live":[{"name":"NIGHT RAID","map":"DAM","level":"MAP CONDITION","when":"16:24–17:24","time":"17:24","remaining":45,"state":"LIVE","long":false,"icon_id":"arc-icon-night-raid","until_label":"45M"}],"next":[{"name":"COLD SNAP","map":"BLUE GATE","level":"MAP CONDITION","when":"17:39–18:39","time":"17:39","remaining":60,"state":"NEXT","long":false,"icon_id":"arc-icon-cold-snap","until_label":"1H"},{"name":"HURRICANE","map":"SPACEPORT","level":"MAP CONDITION","when":"19:39–20:39","time":"19:39","remaining":180,"state":"NEXT","long":false,"icon_id":"arc-icon-hurricane","until_label":"3H"}],"has_data":true,"attribution":"DATA: METAFORGE.APP/ARC-RAIDERS"}}
