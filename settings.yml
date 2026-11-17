@@ -1,0 +1,30 @@
+---
+strategy: polling
+no_screen_padding: 'yes'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+framework_version: 3.4.6
+serverless_language: node
+refresh_interval_floor: ''
+polling_url: 'https://metaforge.app/api/arc-raiders/events-schedule?region={{ region | default: ''europe'' }}'
+polling_headers: 'Accept: application/json'
+polling_body: ''
+id: 542750
+oauth_enabled: 'false'
+oauth_pkce_enabled: 'no'
+custom_fields:
+- keyname: region
+  field_type: select
+  name: Server Region
+  description: Select your ARC Raiders matchmaking region.
+  options:
+  - Europe: europe
+  - North America: north-america
+  - Brazil: brazil
+  - East Asia: east-asia
+  - Oceania: oceania
+  default: europe
+name: ARC Raiders
+description: Unofficial map condition rotation
+refresh_interval: 30

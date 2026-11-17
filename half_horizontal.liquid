@@ -1,0 +1,13 @@
+<div class="arc arc-compact">
+  <div class="arc-c-head"><div class="arc-c-brand"><div class="arc-brand-bars"><span></span><span></span><span></span></div><div class="arc-c-logo">ARC RAIDERS</div></div><div class="arc-c-meta">{{ info.region | escape }} &nbsp; / &nbsp; {{ info.clock }}</div></div>
+  <div class="arc-compact-items">
+    {% for entry in info.live limit:2 %}
+      <div class="arc-c-row"><svg class="arc-icon" aria-hidden="true"><use href="#{{ entry.icon_id }}"></use></svg><div class="arc-c-body"><div class="arc-c-title">{{ entry.name | escape }}</div><div class="arc-c-sub">{{ entry.map | escape }} &nbsp; / &nbsp; LIVE</div></div><div class="arc-c-right">{{ entry.until_label }} LEFT</div></div>
+    {% endfor %}
+    {% for entry in info.next limit:2 %}
+      <div class="arc-c-row"><svg class="arc-icon" aria-hidden="true"><use href="#{{ entry.icon_id }}"></use></svg><div class="arc-c-body"><div class="arc-c-title">{{ entry.name | escape }}</div><div class="arc-c-sub">{{ entry.map | escape }} &nbsp; / &nbsp; NEXT</div></div><div class="arc-c-right">{{ entry.time }}</div></div>
+    {% endfor %}
+    {% if info.has_feature == false %}<div class="arc-empty">SCHEDULE UNAVAILABLE</div>{% endif %}
+  </div>
+  <div class="arc-c-footer">UNOFFICIAL &nbsp; / &nbsp; {{ info.attribution }}</div>
+</div>
