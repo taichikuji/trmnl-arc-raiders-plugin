@@ -1,36 +1,37 @@
 # ARC Raiders
 
-An unofficial TRMNL plugin showing active and upcoming ARC Raiders map conditions using the [MetaForge event schedule](https://metaforge.app/arc-raiders). The embedded SVG artwork comes from the [official Map Conditions page](https://arcraiders.com/map-conditions).
+Map conditions for your next trip topside. Active and upcoming ARC Raiders events on TRMNL, with official event symbols and local start and end times.
 
-Choose a matchmaking region in the plugin settings. All four layouts refresh every 30 minutes and use your TRMNL account's time zone. Scheduled times are shown alongside countdowns calculated at the latest refresh. Countdowns update with the screen.
+<a href="TRMNL/README.md#setup"><img width="150" alt="Works with TRMNL" src="https://trmnl.com/images/brand/badges/light/works-with-trmnl/trmnl-badge-works-with-light.svg" /></a>
 
-“Coming up” shows the next occurrence of each condition within 24 hours. Compact layouts show active conditions first. Counts indicate entries that do not fit, and every layout warns when the source data is more than three hours old.
+[Set up on TRMNL](TRMNL/README.md#setup)
 
-![ARC Raiders map conditions, full layout](TRMNL/media/preview_full.webp)
+![Active and upcoming ARC Raiders map conditions on TRMNL](TRMNL/media/preview_full.webp)
 
-Sample schedule, not live conditions.
+[All layout previews](TRMNL/README.md#previews).
 
-| Half horizontal | Half vertical | Quadrant |
-| --- | --- | --- |
-| ![Half horizontal layout](TRMNL/media/preview_half_horizontal.webp) | ![Half vertical layout](TRMNL/media/preview_half_vertical.webp) | ![Quadrant layout](TRMNL/media/preview_quadrant.webp) |
+## Settings
+
+- No external account needed. Choose your matchmaking region; times follow your TRMNL account time zone.
+- Use Polling, Framework 3.4.6, Node Serverless and a 30-minute refresh interval.
+
+Full, half horizontal, half vertical and quadrant layouts support TRMNL OG and TRMNL X. “Coming up” shows the next occurrence of each condition within 24 hours; compact layouts show active conditions first. Countdowns update with the screen.
 
 ## Develop locally
 
-With Node.js 22 and Docker installed, run from the repository root:
+Install [trmnlp](https://github.com/usetrmnl/trmnlp) v0.32.3, then run from the repository root:
 
 ```sh
-node --test TRMNL/tests/transform.test.cjs
-./scripts/preview
+cd TRMNL
+trmnlp serve
 ```
 
-Browser checks enforce minimum rendered text sizes of 16px on OG and 21 CSS px on X (about 38 panel pixels at its 1.8× render scale). Compact layouts show fewer entries to keep that text legible.
+The local preview polls MetaForge using the region and time zone in [TRMNL/.trmnlp.yml](TRMNL/.trmnlp.yml). Templates, settings and the transform live in [TRMNL/src/](TRMNL/src/); the [plugin guide](TRMNL/README.md#setup) covers setup and checks.
 
-The preview command uses the pinned `trmnl/trmnlp:v0.32.3` image. It runs the real transform against fixed sample data and checks every layout on OG and X, plus a 2-bit OG sample. Cropped screenshots are written to `TRMNL/_build/previews/`; open `TRMNL/_build/report/index.html` for the browser test report.
+Schedule data comes from [MetaForge](https://metaforge.app/arc-raiders). The logo and event symbols come from the [official Map Conditions page](https://arcraiders.com/map-conditions).
 
-For live development, install [trmnlp](https://github.com/usetrmnl/trmnlp) v0.32.3 and run `trmnlp serve` from `TRMNL/`. This polls MetaForge and requires network access. Templates, settings, and the transform are in [TRMNL/src](TRMNL/src/).
-
-## Publish
-
-CI runs transform tests, browser layout checks, and template linting. The manually triggered publishing workflow requires those checks to pass before pushing to TRMNL. It uses the `TRMNL_API_KEY` and `TRMNL_PLUGIN_SETTING_ID` repository secrets.
+## Trademark and artwork notice
 
 ARC Raiders is a trademark of Embark Studios. This project is unofficial and is not affiliated with Embark Studios or MetaForge.
+
+[Questions or ideas?](https://github.com/taichikuji/trmnl-arc-raiders-plugin/issues)
