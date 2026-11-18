@@ -1,11 +1,4 @@
-{% assign limit = 1 %}
-{% if large_device %}{% assign limit = 2 %}{% endif %}
-{% if large_portrait %}{% assign limit = 3 %}{% endif %}
-{% if info.stale %}{% assign limit = limit | minus: 1 %}{% endif %}
-{% assign stack_feature = small_portrait %}
-{% assign narrow_rows = true %}
-{% if large_portrait %}
-  {% assign stack_feature = true %}
-  {% assign narrow_rows = false %}
-{% endif %}
-{% render "arc_compact", wordmark: arc_wordmark, info: info, sprites: arc_icons, limit: limit, tiny: true, stack_feature: stack_feature, narrow_rows: narrow_rows %}
+{% assign limit = 3 %}
+{% if large_device or small_portrait %}{% assign limit = 4 %}{% endif %}
+{% if large_portrait %}{% assign limit = 6 %}{% endif %}
+{% render "arc_compact", wordmark: arc_wordmark, info: info, sprites: arc_icons, limit: limit, narrow_rows: small_portrait %}

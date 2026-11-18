@@ -6,7 +6,7 @@ Create a private plugin on TRMNL using Polling, Framework 3.4.6, Node Serverless
 
 Use [settings.yml](src/settings.yml) for the polling request and region selector. Add [transform.js](src/transform.js) as the serverless transform and copy the five Liquid files in [src/](src/) to their matching markup tabs.
 
-Choose your matchmaking region in the plugin settings. Times use your TRMNL account time zone. Countdowns are calculated at each refresh; the scheduled start and end times stay visible between refreshes. Every layout warns when the source data is more than three hours old.
+Choose your matchmaking region in the plugin settings. Times use your TRMNL account time zone. The full view shows a countdown calculated at each refresh. Half Horizontal has separate Active and Upcoming columns. Half Vertical and Quadrant combine both into one list, with active conditions first. Every layout warns when the source data is more than three hours old.
 
 ## Previews
 

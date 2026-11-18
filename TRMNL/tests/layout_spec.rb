@@ -30,6 +30,7 @@ RSpec.describe 'ARC Raiders layouts' do
     'data' => [{ 'name' => 'Electromagnetic Storm', 'map' => 'Dam Battlegrounds',
                  'startTime' => epoch + 86340000, 'endTime' => epoch + 89940000 }]
   }
+  fifth_active = fixture['data'][4].merge('startTime' => epoch - 600000, 'endTime' => epoch + 3600000)
   cases = {
     'ordinary' => [fixture, now],
     'three-active' => [fixture.merge('data' => fixture['data'].take(3) + fixture['data'].drop(4)), now],
@@ -42,7 +43,8 @@ RSpec.describe 'ARC Raiders layouts' do
     'dst-fallback' => [fallback, '2026-10-25T00:15:00Z'],
     'long-countdown' => [late_condition, now],
     'future-only' => [fixture.merge('data' => fixture['data'].drop(4)), now],
-    'active-only' => [fixture.merge('data' => fixture['data'].take(4)), now]
+    'active-only' => [fixture.merge('data' => fixture['data'].take(4)), now],
+    'five-active' => [fixture.merge('data' => fixture['data'].take(4) + [fifth_active] + fixture['data'].drop(5)), now]
   }
   views = %w[full half_horizontal half_vertical quadrant]
   devices = {
@@ -53,14 +55,13 @@ RSpec.describe 'ARC Raiders layouts' do
     'og-2bit' => { model: 'og_plus', width: 800, height: 480, bit_depth: 2, screen_classes: 'screen screen--ogv2 screen--md screen--2bit' }
   }
   capacities = {
-    'og' => [3, 2, 4, 1], 'x' => [4, 3, 5, 2], 'x-portrait' => [4, 5, 9, 3],
-    'og-portrait' => [3, 2, 4, 1], 'og-2bit' => [3, 2, 4, 1]
+    'og' => [7, 3, 8, 3], 'x' => [9, 4, 10, 4], 'x-portrait' => [12, 6, 14, 6],
+    'og-portrait' => [7, 4, 9, 4], 'og-2bit' => [7, 3, 8, 3]
   }
-  full_row_budgets = { 'x' => 8, 'x-portrait' => 11 }
 
   cases.each do |scenario, (data, time)|
     devices.each do |name, device|
-      next if name == 'og-2bit' && scenario != 'ordinary'
+      next if name == 'og-2bit' && !%w[ordinary five-active].include?(scenario)
 
       views.each_with_index do |view, index|
         it "renders #{scenario} #{name} #{view}" do
@@ -96,6 +97,7 @@ RSpec.describe 'ARC Raiders layouts' do
             qr = screen.box('.qr-code')
             expect(qr.top + qr.height).to be <= bottom_reference.top + bottom_reference.height + 0.5
           else
+            expect(screen).to have_no_css('[data-feature]')
             expect(screen).to have_no_css('.qr-code')
           end
           expect(screen.text.upcase.gsub(/\s+/, '')).to include('ENDS02:00CET') if scenario == 'dst-fallback'
@@ -103,20 +105,31 @@ RSpec.describe 'ARC Raiders layouts' do
 
           b = screen.result.data.fetch('briefing')
           rows = screen.all('[data-entry]')
-          limit = capacities.fetch(name)[index] - (b['stale'] ? 1 : 0)
-          feature = b['live'].first || b['next'].first
-          expected = if view == 'full'
-                       others = b['live'].drop(1).take(limit)
-                       next_offset = feature && !feature['active'] ? 1 : 0
-                       row_budget = full_row_budgets.fetch(name, 6)
-                       row_budget -= 1 if others.empty?
-                       [feature, *others, *b['next'].drop(next_offset).take(row_budget - others.size)].compact
-                     else
-                       (b['live'] + b['next']).take(limit + 1)
-                     end
+          limit = capacities.fetch(name)[index]
+          if view == 'full'
+            limit -= 1 if b['live'].size <= 1
+          elsif b['stale']
+            limit -= 1
+          end
+          if view == 'half_horizontal'
+            active = b['live'].take(limit)
+            upcoming = b['next'].take(limit)
+            expected = active + upcoming
+            if expected.any?
+              active_column = screen.find('section[aria-label="Active conditions"]')
+              upcoming_column = screen.find('section[aria-label="Upcoming conditions"]')
+              expect(active_column.all('[data-entry]').map { |row| row['data-active'] }).to eq(['true'] * active.size)
+              expect(upcoming_column.all('[data-entry]').map { |row| row['data-active'] }).to eq(['false'] * upcoming.size)
+              expect(active_column.text).to include('No active conditions') if active.empty?
+              expect(upcoming_column.text).to include('No upcoming conditions') if upcoming.empty?
+            end
+          else
+            expected = (b['live'] + b['next']).take(limit)
+          end
           expect(rows.size).to eq(expected.size)
           expect(rows.map { it['data-active'] }).to eq(expected.map { it['active'].to_s })
           rows.zip(expected).each do |row, entry|
+            expect(row.text).to include("#{entry['active'] ? 'Ends' : 'Starts'} #{entry['time']}") unless view == 'full'
             next if entry['name'].start_with?('An unfamiliar')
 
             expect(row.find('[data-condition-name]').text.downcase).to eq(entry['name'].downcase)

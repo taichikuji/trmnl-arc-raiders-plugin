@@ -1,5 +1,21 @@
-{% assign limit = 2 %}
-{% if large_device %}{% assign limit = 3 %}{% endif %}
-{% if large_portrait %}{% assign limit = 5 %}{% endif %}
+{% assign limit = 3 %}
+{% if large_device or small_portrait %}{% assign limit = 4 %}{% endif %}
+{% if large_portrait %}{% assign limit = 6 %}{% endif %}
 {% if info.stale %}{% assign limit = limit | minus: 1 %}{% endif %}
-{% render "arc_compact", wordmark: arc_wordmark, info: info, sprites: arc_icons, limit: limit, narrow_rows: small_portrait %}
+{% assign active = info.live | slice: 0, limit %}
+{% assign upcoming = info.next | slice: 0, limit %}
+<div class="layout layout--col layout--top gap--none p--2 lg:p--3">
+  {% render "arc_header", wordmark: arc_wordmark, info: info %}
+  <main class="flex flex--col flex--top gap--none w--full">
+    {% if info.stale %}<span class="label label--base lg:label--large text--bold w--full">STALE SOURCE</span>{% endif %}
+    {% if active.size > 0 or upcoming.size > 0 %}
+      <div class="grid grid--cols-2 gap--medium w--full">
+        {% render "arc_schedule_column", entries: active, total: info.live.size, heading: 'Active', sprites: arc_icons, narrow: small_portrait %}
+        {% render "arc_schedule_column", entries: upcoming, total: info.next.size, heading: 'Upcoming', sprites: arc_icons, narrow: small_portrait %}
+      </div>
+      {% render "arc_omitted", info: info, shown_active: active.size, shown_next: upcoming.size %}
+    {% else %}
+      <span class="label label--base lg:label--large py--2">{{ info.status | escape }}</span>
+    {% endif %}
+  </main>
+</div>
