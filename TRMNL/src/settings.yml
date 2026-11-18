@@ -18,7 +18,13 @@ custom_fields:
   field_type: author_bio
   name: About ARC Raiders
   github_url: https://github.com/taichikuji/trmnl-arc-raiders-plugin
-  description: Unofficial ARC Raiders map conditions, with data from MetaForge.
+  description: >-
+    See which ARC Raiders map conditions are active and what starts next in your
+    matchmaking region. Times follow your TRMNL account time zone.
+    This is an unofficial community recipe. Schedule data comes from
+    <a href="https://metaforge.app/arc-raiders" class="underline">MetaForge</a>.
+    The logo and event symbols come from the
+    <a href="https://arcraiders.com/map-conditions" class="underline">ARC Raiders Map Conditions page</a>.
 - keyname: region
   field_type: select
   name: Server Region

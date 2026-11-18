@@ -7,6 +7,7 @@
 {% if feature and feature.active == false %}{% assign next_offset = 1 %}{% endif %}
 {% assign row_budget = 6 %}
 {% if large_device %}{% assign row_budget = 8 %}{% endif %}
+{% if large_portrait %}{% assign row_budget = 11 %}{% endif %}
 {% if others.size == 0 %}{% assign row_budget = row_budget | minus: 1 %}{% endif %}
 {% assign upcoming_limit = row_budget | minus: others.size %}
 {% assign upcoming = info.next | slice: next_offset, upcoming_limit %}
@@ -15,11 +16,11 @@
 {% assign shown_next = upcoming.size | plus: next_offset %}
 <div class="layout layout--col layout--top gap--none px--4 pt--2 pb--4 lg:px--5 lg:pt--3 lg:pb--5">
   {% render "arc_header", wordmark: arc_wordmark, info: info %}
-  <main class="grid grid--cols-12 gap--medium w--full stretch-y py--2">
-    <div class="col--span-5 h--full">
+  <main class="{% if small_portrait %}flex flex--col flex--top{% else %}grid grid--cols-12{% endif %} gap--medium w--full stretch-y py--2">
+    <div class="{% if small_portrait %}w--full h--56 no-shrink{% else %}col--span-5 lg:portrait:col--span-4 h--full{% endif %}">
       {% render "arc_feature", entry: feature, info: info, sprites: arc_icons, variant: 'full' %}
     </div>
-    <section class="col--span-7 flex flex--col flex--top flex--left gap--none h--full">
+    <section class="{% if small_portrait %}w--full{% else %}col--span-7 lg:portrait:col--span-8 h--full{% endif %} flex flex--col flex--top flex--left gap--none">
       <div class="flex flex--row flex--between w--full pb--1 border--h-black">
         <span class="label label--base lg:label--large text--bold">{% if feature.active %}ALSO ACTIVE{% else %}ACTIVE NOW{% endif %}</span>
         <span class="label label--base lg:label--large">{{ info.live.size }} TOTAL</span>

@@ -1,4 +1,5 @@
 {% assign limit = 4 %}
 {% if large_device %}{% assign limit = 5 %}{% endif %}
+{% if large_portrait %}{% assign limit = 9 %}{% endif %}
 {% if info.stale %}{% assign limit = limit | minus: 1 %}{% endif %}
-{% render "arc_compact", wordmark: arc_wordmark, info: info, sprites: arc_icons, limit: limit, vertical: true %}
+{% render "arc_compact", wordmark: arc_wordmark, info: info, sprites: arc_icons, limit: limit, vertical: true, narrow_rows: small_portrait %}

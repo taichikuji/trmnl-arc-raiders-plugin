@@ -48,9 +48,15 @@ RSpec.describe 'ARC Raiders layouts' do
   devices = {
     'og' => { model: 'og_png', width: 800, height: 480, bit_depth: 1, screen_classes: 'screen screen--og_png screen--md screen--1bit' },
     'x' => { model: 'v2', width: 1872, height: 1404, bit_depth: 4, screen_classes: 'screen screen--v2 screen--lg screen--4bit' },
+    'x-portrait' => { model: 'v2', width: 1404, height: 1872, bit_depth: 4, screen_classes: 'screen screen--v2 screen--lg screen--4bit screen--portrait' },
+    'og-portrait' => { model: 'og_plus', width: 480, height: 800, bit_depth: 2, screen_classes: 'screen screen--ogv2 screen--md screen--2bit screen--portrait' },
     'og-2bit' => { model: 'og_plus', width: 800, height: 480, bit_depth: 2, screen_classes: 'screen screen--ogv2 screen--md screen--2bit' }
   }
-  capacities = { 'og' => [3, 2, 4, 1], 'x' => [4, 3, 5, 2], 'og-2bit' => [3, 2, 4, 1] }
+  capacities = {
+    'og' => [3, 2, 4, 1], 'x' => [4, 3, 5, 2], 'x-portrait' => [4, 5, 9, 3],
+    'og-portrait' => [3, 2, 4, 1], 'og-2bit' => [3, 2, 4, 1]
+  }
+  full_row_budgets = { 'x' => 8, 'x-portrait' => 11 }
 
   cases.each do |scenario, (data, time)|
     devices.each do |name, device|
@@ -72,7 +78,7 @@ RSpec.describe 'ARC Raiders layouts' do
           expect(screen).to have_no_overlapping_text
           small_text = screen.evaluate(<<~JS)
             (() => {
-              const tooSmall = [], minimum = #{name == 'x' ? 21 : 16};
+              const tooSmall = [], minimum = #{device[:model] == 'v2' ? 21 : 16};
               const walker = document.createTreeWalker(document.querySelector('.view'), NodeFilter.SHOW_TEXT);
               for (let node; node = walker.nextNode();) {
                 const text = node.textContent.trim(), el = node.parentElement;
@@ -86,9 +92,9 @@ RSpec.describe 'ARC Raiders layouts' do
           expect(small_text).to be_empty
           expect(screen).to have_no_css('footer')
           if view == 'full'
-            feature_panel = screen.box('[data-feature]')
+            bottom_reference = name == 'og-portrait' ? box : screen.box('[data-feature]')
             qr = screen.box('.qr-code')
-            expect(qr.top + qr.height).to be <= feature_panel.top + feature_panel.height + 0.5
+            expect(qr.top + qr.height).to be <= bottom_reference.top + bottom_reference.height + 0.5
           else
             expect(screen).to have_no_css('.qr-code')
           end
@@ -102,7 +108,7 @@ RSpec.describe 'ARC Raiders layouts' do
           expected = if view == 'full'
                        others = b['live'].drop(1).take(limit)
                        next_offset = feature && !feature['active'] ? 1 : 0
-                       row_budget = name == 'x' ? 8 : 6
+                       row_budget = full_row_budgets.fetch(name, 6)
                        row_budget -= 1 if others.empty?
                        [feature, *others, *b['next'].drop(next_offset).take(row_budget - others.size)].compact
                      else
@@ -115,8 +121,12 @@ RSpec.describe 'ARC Raiders layouts' do
 
             expect(row.find('[data-condition-name]').text.downcase).to eq(entry['name'].downcase)
           end
-          omitted = screen.all('[data-omitted]').sum { it['data-omitted'].to_i }
-          expect(omitted + rows.size).to eq(b['live'].size + b['next'].size)
+          omitted_active = b['live'].size - expected.count { |entry| entry['active'] }
+          omitted_next = b['next'].size - expected.count { |entry| !entry['active'] }
+          omitted_labels = []
+          omitted_labels << "#{omitted_active} active" if omitted_active.positive?
+          omitted_labels << "#{omitted_next} upcoming" if omitted_next.positive?
+          expect(screen.all('[data-omitted]').map(&:text)).to eq(omitted_labels.empty? ? [] : ["+#{omitted_labels.join(' · ')}"])
           expect(screen.text.downcase).to include(b['status'].downcase) unless b['status'] == 'Schedule ready'
           expect(screen.evaluate("document.querySelectorAll('.view script').length")).to eq(0)
           expect(screen.evaluate("[...document.querySelectorAll('.view img')].every(img => img.complete && img.naturalWidth > 0)")).to be(true)

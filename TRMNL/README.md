@@ -27,7 +27,7 @@ node --test TRMNL/tests/transform.test.cjs
 ./scripts/preview
 ```
 
-The preview command uses `trmnl/trmnlp:v0.32.3` to render fixed sample data on OG and X, plus a 2-bit OG sample. Checks cover empty and stale schedules, long names, overnight events and daylight-saving changes. They also enforce minimum rendered text sizes of 16px on OG and 21 CSS px on X.
+The preview command uses `trmnl/trmnlp:v0.32.3` to render fixed sample data on OG and X in both orientations, plus a 2-bit OG landscape sample. Checks cover empty and stale schedules, long names, overnight events and daylight-saving changes. They also enforce minimum rendered text sizes of 16px on OG and 21 CSS px on X.
 
 Cropped screenshots are written to `TRMNL/_build/previews/`; open `TRMNL/_build/report/index.html` for the browser test report.
 
