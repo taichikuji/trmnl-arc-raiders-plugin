@@ -32,6 +32,7 @@ RSpec.describe 'ARC Raiders layouts' do
   }
   cases = {
     'ordinary' => [fixture, now],
+    'three-active' => [fixture.merge('data' => fixture['data'].take(3) + fixture['data'].drop(4)), now],
     'crowded' => [crowded, now],
     'long-names' => [long_names, now],
     'empty' => [fixture.merge('data' => []), now],
@@ -84,6 +85,13 @@ RSpec.describe 'ARC Raiders layouts' do
           JS
           expect(small_text).to be_empty
           expect(screen).to have_no_css('footer')
+          if view == 'full'
+            feature_panel = screen.box('[data-feature]')
+            qr = screen.box('.qr-code')
+            expect(qr.top + qr.height).to be <= feature_panel.top + feature_panel.height + 0.5
+          else
+            expect(screen).to have_no_css('.qr-code')
+          end
           expect(screen.text.upcase.gsub(/\s+/, '')).to include('ENDS02:00CET') if scenario == 'dst-fallback'
           expect(screen).to have_text('STALE SOURCE') if scenario == 'stale'
 
@@ -94,7 +102,9 @@ RSpec.describe 'ARC Raiders layouts' do
           expected = if view == 'full'
                        others = b['live'].drop(1).take(limit)
                        next_offset = feature && !feature['active'] ? 1 : 0
-                       [feature, *others, *b['next'].drop(next_offset).take(name == 'x' ? 4 : 3)].compact
+                       row_budget = name == 'x' ? 8 : 6
+                       row_budget -= 1 if others.empty?
+                       [feature, *others, *b['next'].drop(next_offset).take(row_budget - others.size)].compact
                      else
                        (b['live'] + b['next']).take(limit + 1)
                      end

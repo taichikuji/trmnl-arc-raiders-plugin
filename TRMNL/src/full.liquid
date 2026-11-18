@@ -5,15 +5,17 @@
 {% assign others = info.live | slice: 1, limit %}
 {% assign next_offset = 0 %}
 {% if feature and feature.active == false %}{% assign next_offset = 1 %}{% endif %}
-{% assign upcoming_limit = 3 %}
-{% if large_device %}{% assign upcoming_limit = 4 %}{% endif %}
+{% assign row_budget = 6 %}
+{% if large_device %}{% assign row_budget = 8 %}{% endif %}
+{% if others.size == 0 %}{% assign row_budget = row_budget | minus: 1 %}{% endif %}
+{% assign upcoming_limit = row_budget | minus: others.size %}
 {% assign upcoming = info.next | slice: next_offset, upcoming_limit %}
 {% assign shown_active = others.size %}
 {% if feature.active %}{% assign shown_active = shown_active | plus: 1 %}{% endif %}
 {% assign shown_next = upcoming.size | plus: next_offset %}
-<div class="layout layout--col layout--top gap--none p--4 lg:p--5">
-  {% render "arc_header", wordmark: arc_wordmark, info: info, full: true %}
-  <main class="grid grid--cols-12 gap--medium w--full stretch-y py--3 lg:py--2">
+<div class="layout layout--col layout--top gap--none px--4 pt--2 pb--4 lg:px--5 lg:pt--3 lg:pb--5">
+  {% render "arc_header", wordmark: arc_wordmark, info: info %}
+  <main class="grid grid--cols-12 gap--medium w--full stretch-y py--2">
     <div class="col--span-5 h--full">
       {% render "arc_feature", entry: feature, info: info, sprites: arc_icons, variant: 'full' %}
     </div>
@@ -30,7 +32,12 @@
       </div>
       {% for entry in upcoming %}{% render "arc_entry", entry: entry, sprites: arc_icons %}{% endfor %}
       {% if upcoming.size == 0 %}<span class="label label--base lg:label--large py--2">{% if info.next.size > 0 %}No other upcoming conditions{% else %}None in the next 24 hours{% endif %}</span>{% endif %}
-      {% render "arc_omitted", info: info, shown_active: shown_active, shown_next: shown_next %}
+      <div class="flex flex--row flex--right gap--small w--full pt--1">
+        {% render "arc_omitted", info: info, shown_active: shown_active, shown_next: shown_next %}
+        <div class="flex no-shrink w--[56px] lg:w--[74px]" role="img" aria-label="QR code for the official ARC Raiders map conditions schedule">
+          {{ "https://arcraiders.com/map-conditions" | qr_code: 3, 'm' }}
+        </div>
+      </div>
     </section>
   </main>
 </div>

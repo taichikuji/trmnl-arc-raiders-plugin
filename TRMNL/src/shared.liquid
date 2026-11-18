@@ -37,10 +37,7 @@
 {% template arc_header %}
   <header class="flex flex--row flex--between w--full pb--2 border--h-black gap--small">
     {{ wordmark }}
-    <div class="flex flex--col flex--right gap--none">
-      {% if full %}<span class="label label--base lg:label--large text--bold">SURFACE CONDITIONS</span>{% endif %}
-      <span class="label label--base lg:label--large">{{ info.region | replace: '-', ' ' | upcase | escape }}</span>
-    </div>
+    <span class="label label--base lg:label--large">{{ info.region | replace: '-', ' ' | upcase | escape }}</span>
   </header>
 {% endtemplate %}
 
