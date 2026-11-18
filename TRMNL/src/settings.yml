@@ -14,21 +14,10 @@ id: 542750
 oauth_enabled: 'false'
 oauth_pkce_enabled: 'no'
 custom_fields:
-- keyname: bio
-  field_type: author_bio
-  name: About ARC Raiders
-  github_url: https://github.com/taichikuji/trmnl-arc-raiders-plugin
-  description: >-
-    See which ARC Raiders map conditions are active and what starts next in your
-    matchmaking region. Times follow your TRMNL account time zone.
-    This is an unofficial community recipe. Schedule data comes from
-    <a href="https://metaforge.app/arc-raiders" class="underline">MetaForge</a>.
-    The logo and event symbols come from the
-    <a href="https://arcraiders.com/map-conditions" class="underline">ARC Raiders Map Conditions page</a>.
 - keyname: region
   field_type: select
-  name: Server Region
-  description: Select your ARC Raiders matchmaking region.
+  name: Matchmaking region
+  description: Choose the region you play in to see its map condition schedule.
   options:
   - Europe: europe
   - North America: north-america
@@ -36,6 +25,20 @@ custom_fields:
   - East Asia: east-asia
   - Oceania: oceania
   default: europe
+- keyname: bio
+  field_type: author_bio
+  name: About This Plugin
+  category: games
+  github_url: https://github.com/taichikuji/trmnl-arc-raiders-plugin
+  learn_more_url: https://github.com/taichikuji/trmnl-arc-raiders-plugin/tree/main/TRMNL#setup
+  description: >-
+    See which ARC Raiders map conditions are active and what starts next in your
+    matchmaking region. Times follow your TRMNL account time zone.
+    No game account or API key required.
+    <br/><br/>This is an unofficial community recipe. Schedule data comes from
+    <a href="https://metaforge.app/arc-raiders" class="underline">MetaForge</a>.
+    The logo and event symbols come from the
+    <a href="https://arcraiders.com/map-conditions" class="underline">ARC Raiders Map Conditions page</a>.
 name: ARC Raiders
 description: Unofficial map condition rotation
 refresh_interval: 30
