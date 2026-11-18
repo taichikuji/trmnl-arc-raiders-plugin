@@ -1,7 +1,16 @@
 name: Publish to TRMNL
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'TRMNL/src/**'
+      - '.github/workflows/publish.yml'
   workflow_dispatch:
+
+concurrency:
+  group: publish-trmnl
+  cancel-in-progress: false
 
 permissions:
   contents: read

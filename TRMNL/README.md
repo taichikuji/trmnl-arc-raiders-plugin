@@ -33,4 +33,4 @@ Cropped screenshots are written to `TRMNL/_build/previews/`; open `TRMNL/_build/
 
 ## Publish
 
-CI runs the transform tests, browser layout checks and template linting. The manually triggered publishing workflow requires those checks to pass before pushing to TRMNL. It uses the `TRMNL_API_KEY` and `TRMNL_PLUGIN_SETTING_ID` repository secrets.
+CI runs the transform tests, browser layout checks and template linting. Changes to `TRMNL/src/` on `main` publish automatically after those checks pass; the publishing workflow can also be triggered manually. It uses the `TRMNL_API_KEY` and `TRMNL_PLUGIN_SETTING_ID` repository secrets.
