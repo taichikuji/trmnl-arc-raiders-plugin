@@ -34,13 +34,13 @@ custom_fields:
   description: >-
     Plan your next run in ARC Raiders with a glance at current and upcoming map conditions.
     The screen shows which events are active now, what starts next and when each condition
-    begins or ends. Choose the matchmaking region that matches your game sessions: Europe,
-    North America, Brazil, East Asia or Oceania. Start and end times follow your TRMNL
+    begins or ends. <br/><br/> Choose the matchmaking region that matches your game sessions:
+    Europe, North America, Brazil, East Asia or Oceania. Start and end times follow your TRMNL
     account time zone, and compact layouts put active events first so you can recognize the
-    current situation quickly. The schedule is provided by MetaForge, while event symbols and
-    logo artwork come from the official ARC Raiders map conditions page. No game account or
-    API key is required. This is an unofficial community recipe and is not affiliated with
-    Embark Studios or MetaForge. Created by Ivan Perez.
+    current situation quickly. <br/><br/> The schedule is provided by MetaForge, while event
+    symbols and logo artwork come from the official ARC Raiders map conditions page.
+    <br/><br/> No game account or API key is required. This is an unofficial community recipe
+    and is not affiliated with Embark Studios or MetaForge. Created by Ivan Perez.
 name: ARC Raiders
 description: ARC Raiders map events and times
 refresh_interval: 30
