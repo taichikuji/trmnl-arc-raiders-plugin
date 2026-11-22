@@ -2,7 +2,7 @@
 
 ## Setup
 
-Create a private plugin on TRMNL using Polling, Framework 3.4.6, Node Serverless and a 30-minute refresh interval.
+Create a private plugin on TRMNL using Polling, Framework 3.4.6, Node Serverless and a 15-minute refresh interval.
 
 Use [settings.yml](src/settings.yml) for the polling request and region selector. Add [transform.js](src/transform.js) as the serverless transform and copy the five Liquid files in [src/](src/) to their matching markup tabs.
 

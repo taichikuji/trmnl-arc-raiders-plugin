@@ -43,4 +43,4 @@ custom_fields:
     and is not affiliated with Embark Studios or MetaForge. Created by Ivan Perez.
 name: ARC Raiders
 description: ARC Raiders map events and times
-refresh_interval: 30
+refresh_interval: 15

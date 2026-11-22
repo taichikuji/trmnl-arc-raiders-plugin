@@ -13,7 +13,7 @@ Map conditions for your next trip topside. Active and upcoming ARC Raiders event
 ## Settings
 
 - No external account needed. Choose your matchmaking region; times follow your TRMNL account time zone.
-- Use Polling, Framework 3.4.6, Node Serverless and a 30-minute refresh interval.
+- Use Polling, Framework 3.4.6, Node Serverless and a 15-minute refresh interval.
 
 Full, half horizontal, half vertical and quadrant layouts support TRMNL OG and TRMNL X. “Coming up” shows the next occurrence of each condition within 24 hours; compact layouts show active conditions first. Countdowns update with the screen.
 
