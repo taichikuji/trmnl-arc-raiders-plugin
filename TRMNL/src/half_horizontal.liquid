@@ -4,7 +4,7 @@
 {% if info.stale %}{% assign limit = limit | minus: 1 %}{% endif %}
 {% assign active = info.live | slice: 0, limit %}
 {% assign upcoming = info.next | slice: 0, limit %}
-<div class="layout layout--col layout--top gap--none p--2 lg:p--3">
+<div class="layout layout--col layout--top gap--none">
   {% render "arc_header", wordmark: arc_wordmark, info: info %}
   <main class="flex flex--col flex--top gap--none w--full">
     {% if info.stale %}<span class="label label--base lg:label--large text--bold w--full">STALE SOURCE</span>{% endif %}

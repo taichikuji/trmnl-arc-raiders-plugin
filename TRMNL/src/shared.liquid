@@ -104,7 +104,7 @@
   {% assign entries = info.live | concat: info.next | slice: 0, limit %}
   {% assign shown_active = info.live.size | at_most: entries.size %}
   {% assign shown_next = entries.size | minus: shown_active %}
-  <div class="layout layout--col layout--top gap--none p--2 lg:p--3">
+  <div class="layout layout--col layout--top gap--none">
     {% render "arc_header", wordmark: wordmark, info: info, narrow: narrow_rows %}
     <main class="flex flex--col flex--top gap--none w--full">
       <div class="flex flex--col flex--left gap--none w--full py--1 border--h-black">
